@@ -9,10 +9,16 @@ from charity_donation.models import *
 class LandingPage(View):
     def get(self, request):
         donations_number = sum(Donation.objects.values_list('quantity', flat=True))
-        donated_institutions = Donation.objects.values('institution').distinct().count()
+        donated_institutions_number = Donation.objects.values('institution').distinct().count()
+        foundations = Institution.objects.filter(type=1)
+        organizations = Institution.objects.filter(type=2)
+        local_collections = Institution.objects.filter(type=3)
         return render(request, 'charity_donation/index.html',
                       {'donations_number': donations_number,
-                       'donated_institutions': donated_institutions})
+                       'donated_institutions_number': donated_institutions_number,
+                       'foundations': foundations,
+                       'organizations': organizations,
+                       'local_collections': local_collections})
 
 class AddDonation(View):
     def get(self, request):
