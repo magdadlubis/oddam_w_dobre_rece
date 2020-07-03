@@ -18,7 +18,7 @@ class Category(models.Model):
 class Institution(models.Model):
     name = models.CharField(verbose_name='Nazwa instytucji', max_length=128)
     description = models.TextField(verbose_name='Opis')
-    type = models.IntegerField(verbose_name='Rodzaj instytucji', choices=INSTITUTION_TYPE, default=1)
+    type = models.IntegerField(verbose_name='Rodzaj organizacji', choices=INSTITUTION_TYPE, default=1)
     categories = models.ManyToManyField(Category)
 
 
