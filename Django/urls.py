@@ -22,5 +22,9 @@ urlpatterns = [
     path('', LandingPage.as_view(), name='landing-page'),
     path('add_donation/', AddDonation.as_view(), name='add-donation'),
     path('login/', Login.as_view(), name='login'),
+    path('logout/', Logout.as_view(), name='logout'),
     path('register/', Register.as_view(), name='register'),
+    path('profile/', Profile.as_view(), name='profile'),
+    path('get_institution_by_category/', get_institution_by_category, name='get_institution_by_category'),
+    path('edit_donation/<int:donation_id>/', EditDonation.as_view(), name='edit-donation'),
 ]

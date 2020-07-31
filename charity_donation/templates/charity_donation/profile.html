@@ -1,0 +1,53 @@
+{% extends 'charity_donation/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <section class="login-page">
+      <h2>Profil użytkownika</h2>
+        <div class="help--slides active">
+            <p>
+            Imię: {{ request.user.first_name }}<br>
+            Nazwisko: {{ request.user.last_name }}<br>
+            E-mail: {{ request.user.email }}<br>
+            </p>
+        </div>
+              <h2>Lista przygotowanych darów</h2>
+        <div class="help--slides active">
+        {% for donation in prepared_donations %}
+            <p>
+                Data utworzenia daru: {{ donation.date_added }}<br>
+                Ilość worków: {{ donation.quantity }}<br>
+                Organizacja: {{ donation.institution }}<br>
+                Kategorie:
+                    {% for category in donation.categories.all %}
+                    <br>- {{ category.name }}
+                        {% endfor %}<br>
+                Data odbioru: {{ donation.pick_up_date }}, godzina: {{ donation.pick_up_time }}<br>
+                Status: {{ donation.get_is_taken_display }}<br>
+                <a href="{% url 'edit-donation' donation.pk %}" class="btn btn--without-border active">
+                    Oznacz jako odebrany
+                </a><hr width="300px">
+            </p>
+            {% endfor %}
+        </div>
+      <h2>Lista odebrancyh darów</h2>
+        <div class="help--slides active">
+        {% for donation in completed_donations %}
+            <p>
+                Data utworzenia daru: {{ donation.date_added }}<br>
+                Ilość worków: {{ donation.quantity }}<br>
+                Organizacja: {{ donation.institution }}<br>
+                Kategorie:
+                    {% for category in donation.categories.all %}
+                    <br>- {{ category.name }}
+                        {% endfor %}<br>
+                Data odbioru: {{ donation.pick_up_date }}, godzina: {{ donation.pick_up_time }}<br>
+                Status: {{ donation.get_is_taken_display }}<br>
+                Odebrano w dniu: {{ donation.picked_up_date }}<br>
+                <a href="{% url 'edit-donation' donation.pk %}" class="btn btn--without-border active">Edytuj</a><hr width="300px">
+            </p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

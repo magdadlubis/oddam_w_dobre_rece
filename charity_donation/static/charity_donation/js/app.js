@@ -2,6 +2,76 @@ document.addEventListener("DOMContentLoaded", function() {
   /**
    * HomePage - Help section
    */
+
+  function show_organization(ids) {
+        var address = '/get_institution_by_category/';
+        var data2 = {'cat_id':ids};
+        $.ajax(address, {data: data2, traditional:true}).success( function (data, status) {
+        $('#institution').html(data);
+        });
+
+}
+
+  function form_validation() {
+
+      if(($('input[name="categories"]:checked').length) == 0){
+      alert("Wybierz co najmniej jedną kategorię");
+      return false;
+      };
+
+      if(document.form.bags.value == "") {
+      alert("Uzupełnij liczbę worków");
+      return false;
+      };
+
+      if($('input[name="organization"]:checked').val() == undefined){
+        alert("Wybierz organizację, której chcesz przekazać dary");
+        return false;
+      };
+
+      if(document.form.address.value == "") {
+      alert("Uzupełnij adres");
+      return false;
+      };
+
+      if(document.form.city.value == "") {
+      alert("Uzupełnij miasto");
+      return false;
+      };
+
+      var postcode_format = /^\d{2}-\d{3}$/;
+      if(document.form.postcode.value == "" || !document.form.postcode.value.match(postcode_format)) {
+      alert("Uzupełnij kod pocztowy w formacie xx-xxx");
+      return false;
+      };
+
+      var phone_format = /^\d{9}$/;
+      if(!document.form.phone.value.match(phone_format)) {
+      alert("Wprowadź 9 cyfrowy numer telefonu");
+      return false;
+      };
+
+      if(document.form.date.value == "") {
+        alert("Wybierz datę odbioru");
+        return false;
+      };
+
+      var date = document.form.date.value;
+      var varDate = new Date(date);
+      var today = new Date();
+      if(varDate <= today) {
+        alert("Data nie może być wcześniejsza od dzisiejszej");
+        return false;
+      };
+
+      if(document.form.time.value == "") {
+      alert("Wybierz godzinę odbioru");
+      return false;
+      };
+
+      return(true);
+}
+
   class Help {
     constructor($el) {
       this.$el = $el;
@@ -223,6 +293,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // TODO: Validation
 
+      if (this.currentStep == 3){
+        var ids = [];
+        $('input[name="categories"]:checked').each(function() {
+            ids.push(this.value);
+      })
+        // console.log(ids)
+        show_organization(ids)
+      }
+
       this.slides.forEach(slide => {
         slide.classList.remove("active");
 
@@ -234,7 +313,49 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
+
       // TODO: get data from inputs and show them in summary
+
+
+      if (this.currentStep == 5){
+        var bags = $('input[name="bags"]').val();
+        var bags_span = $("#bags")[0];
+        bags_span.innerText = bags_span.textContent = 'Liczba worków: ' + bags;
+
+
+        var organization = $('input[name="organization"]:checked').attr('my-attr');
+        var org_span = $("#organization")[0];
+        org_span.innerText = "Dla: " + organization;
+
+        var address = $('input[name="address"]').val();
+        var address_li = $("#address")[0];
+        address_li.innerText = address;
+
+        var city = $('input[name="city"]').val();
+        var city_li = $("#city")[0];
+        city_li.innerText = city;
+
+        var postcode = $('input[name="postcode"]').val();
+        var postcode_li = $("#postcode")[0];
+        postcode_li.innerText = postcode;
+
+        var phone = $('input[name="phone"]').val();
+        var phone_li = $("#phone")[0];
+        phone_li.innerText = phone;
+
+        var date = $('input[name="date"]').val();
+        var date_li = $("#date")[0];
+        date_li.innerText = date;
+
+        var time = $('input[name="time"]').val();
+        var time_li = $("#time")[0];
+        time_li.innerText = time;
+
+        var more_info = $('textarea[name="more_info"]').val();
+        var more_info_li = $("#more-info")[0];
+        more_info_li.innerText = more_info;
+      }
+
     }
 
     /**
@@ -242,11 +363,17 @@ document.addEventListener("DOMContentLoaded", function() {
      *
      * TODO: validation, send data to server
      */
+
     submit(e) {
-      e.preventDefault();
-      this.currentStep++;
-      this.updateForm();
+      // e.preventDefault();
+      if (form_validation() == false) {
+        e.preventDefault();
+      } else {
+        this.currentStep++;
+        this.updateForm();
+      }
     }
+
   }
   const form = document.querySelector(".form--steps");
   if (form !== null) {

@@ -4,21 +4,7 @@
 
     {% block header %}
         <header class="header--main-page">
-      <nav class="container container--70">
-        <ul class="nav--actions">
-          <li><a href="{% url 'login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
-          <li><a href="{% url 'register' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-        </ul>
-
-        <ul>
-          <li><a href="{% url 'landing-page' %}" class="btn btn--without-border active">Start</a></li>
-          <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
-          <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
-          <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-          <li><a href="{% url 'add-donation' %}" class="btn btn--without-border">Przekaż dary</a></li>
-          <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
-      </nav>
+        {% include 'charity_donation/header.html' %}
         <div class="slogan container container--90">
         <div class="slogan--item">
           <h1>
@@ -116,14 +102,28 @@
           </li>
             {% endfor %}
         </ul>
-        <!-- Pagination
+
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
+            {% if foundations.has_previous %}
+          <li><a href="?page={{ foundations.previous_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ foundations.previous_page_number }}">
+              {{ foundations.previous_page_number }}</a></li>
+            {% endif %}
+
+            <li><a href="?page={{ foundations.number }}#help"
+                   class="btn btn--small btn--without-border active"
+                   data-page="{{ foundations.number }}">
+                {{ foundations.number }}</a></li>
+
+            {% if foundations.has_next %}
+          <li><a href="?page={{ foundations.next_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ foundations.next_page_number }}">
+              {{ foundations.next_page_number }}</a></li>
+            {% endif %}
         </ul>
-        -->
-      </div>
+</div>
 
 
       <!-- SLIDE 2 -->
@@ -150,15 +150,26 @@
             {% endfor %}
         </ul>
 
-        <!-- Pagination
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="3">3</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="4">4</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="5">5</a></li>
+            {% if organizations.has_previous %}
+          <li><a href="?page={{ organizations.previous_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ organizations.previous_page_number }}">
+              {{ organizations.previous_page_number }}</a></li>
+            {% endif %}
+
+            <li><a href="?page={{ organizations.number }}#help"
+                   class="btn btn--small btn--without-border active"
+                   data-page="{{ organizations.number }}">
+                {{ organizations.number }}</a></li>
+
+            {% if organizations.has_next %}
+          <li><a href="?page={{ organizations.next_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ organizations.next_page_number }}">
+              {{ organizations.next_page_number }}</a></li>
+            {% endif %}
         </ul>
-        -->
       </div>
 
       <!-- SLIDE 3 -->
@@ -182,12 +193,26 @@
             {% endfor %}
         </ul>
 
-        <!-- Pagination
         <ul class="help--slides-pagination">
-          <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
-          <li><a href="#" class="btn btn--small btn--without-border" data-page="2">2</a></li>
+            {% if local_collections.has_previous %}
+          <li><a href="?page={{ local_collections.previous_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ local_collections.previous_page_number }}">
+              {{ local_collections.previous_page_number }}</a></li>
+            {% endif %}
+
+            <li><a href="?page={{ local_collections.number }}#help"
+                   class="btn btn--small btn--without-border active"
+                   data-page="{{ local_collections.number }}">
+                {{ local_collections.number }}</a></li>
+
+            {% if local_collections.has_next %}
+          <li><a href="?page={{ local_collections.next_page_number }}#help"
+                 class="btn btn--small btn--without-border"
+                 data-page="{{ local_collections.next_page_number }}">
+              {{ local_collections.next_page_number }}</a></li>
+            {% endif %}
         </ul>
-        -->
       </div>
     </section>
 {% endblock %}
